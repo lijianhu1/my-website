@@ -1,0 +1,70 @@
+@import "//at.alicdn.com/t/font_1367435_awisquss1fb.css";
+
+$g_color_999:#999;
+$g_color_border:#ccc;
+$g_color_base:#98d361;
+
+$g_header_h:60px;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+ul>li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: #666;
+}
+
+.wrap {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.h-w-full {
+  width: 100% !important;
+}
+
+.h-align-l {
+  text-align: left;
+}
+
+.h-align-c {
+  text-align: center;
+}
+
+.h-align-r {
+  text-align: right;
+}
+
+$position: (t:top, r:right, b:bottom, l:left);
+
+@each $name,
+$attr in $position {
+  @for $i from 1 through 50 {
+    .h-m#{$name}#{$i} {
+      margin-#{$attr}: $i * 1px !important;
+    }
+
+    .h-p#{$name}#{$i} {
+      padding-#{$attr}: $i * 1px !important;
+    }
+  }
+}
+
+@for $i from 12 through 30 {
+  .h-fontsize#{$i} {
+    font-size: #{$i}px !important;
+  }
+}
