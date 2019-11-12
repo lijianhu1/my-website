@@ -4,3 +4,5 @@ declare module '*.vue' {
 }
 declare module 'vue-echarts'
 declare module '@/util/tool.js'
+declare module 'jsencrypt'
+declare module 'lodash'

@@ -13,12 +13,12 @@
       </div>
       <el-form ref="form" class="login-form">
         <el-form-item>
-          <el-input prefix-icon="el-icon-user" placeholder="请输入账号"></el-input>
+          <el-input prefix-icon="el-icon-user" v-model="form.username" placeholder="请输入账号"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input prefix-icon="el-icon-lock" @focus="isActive = true" @blur="isActive = false" placeholder="请输入密码"></el-input>
+          <el-input prefix-icon="el-icon-lock" v-model="form.password" @focus="isActive = true" @blur="isActive = false" placeholder="请输入密码"></el-input>
         </el-form-item>
-        <el-button type="primary" class="h-w-full">登录</el-button>
+        <el-button type="primary" class="h-w-full" @click="getPublicKey">登录</el-button>
       </el-form>
     </section>
   </div>
@@ -26,9 +26,20 @@
 
 <script lang="ts">
   import { Vue, Component } from 'vue-property-decorator';
+  import JSEncrypt from 'jsencrypt';
+  import ajax from '@/service/ajax';
+  interface ResData {
+    code: number;
+    message: string;
+    data?: any;
+  }
   @Component
   export default class Login extends Vue {
     private isActive: boolean = false;
+    private form: object = {
+      username: 'admin',
+      password: 'admin'
+    };
     private mounted(): void {
       const owl = document.getElementsByClassName('owl')[0];
       const owlRect: any = owl.getBoundingClientRect();
@@ -48,10 +59,32 @@
         }
       };
     }
+    // getPublicKey
+    private async getPublicKey() {
+      ajax.getPublicKey((resKey: ResData) => {
+        if (resKey.code === 200) {
+          const encrypt = new JSEncrypt();
+          encrypt.setPublicKey(resKey.data);
+          const config: any = Object.assign({}, this.form);
+          config.password = encrypt.encrypt((this.form as any).password);
+          this.login(config);
+        }
+      });
+    }
+    private login(config: object): void {
+      ajax.login(config, (res: any) => {
+        if (res.code === 0) {
+          this.$router.push('/home');
+          (this as any).$message(res.message);
+        } else {
+          (this as any).$message(res.message);
+        }
+      });
+    }
   }
 </script>
 <style lang="scss" scoped>
-@import '~@/assets/scss/common.scss';
+// @import '~@/assets/scss/common.scss';
 #login {
   display: flex;
   height: 100vh;

@@ -4,7 +4,10 @@ $g_color_999:#999;
 $g_color_border:#ccc;
 $g_color_base:#98d361;
 
+$g_color_back:#354457;
+
 $g_header_h:60px;
+$g_nav_back_w:210px;
 
 * {
   padding: 0;
@@ -16,6 +19,7 @@ $g_header_h:60px;
 body {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 ul>li {
@@ -46,6 +50,10 @@ a {
 
 .h-align-r {
   text-align: right;
+}
+
+.h-flex {
+  display: flex;
 }
 
 $position: (t:top, r:right, b:bottom, l:left);

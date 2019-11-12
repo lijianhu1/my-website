@@ -204,14 +204,20 @@
         if (top >= itemTop - 800) {
           const parentClass = item.offsetParent.classList;
           item.classList.add('show');
-          if (Array.from(parentClass).includes('project-wrap')) {
-            const timelineContent = item.childNodes[1].children[0].children[0];
-            if (!timelineContent.style.visibility) {
-              timelineContent.style.visibility = 'visible';
-              const ran = Math.floor(Math.random() * this.animationClass.length);
-              timelineContent.classList.add('animated', this.animationClass[ran]);
-            }
+          const timelineContent = item.childNodes[1].children[0].children[0];
+          if (!timelineContent.style.visibility) {
+            timelineContent.style.visibility = 'visible';
+            const ran = Math.floor(Math.random() * this.animationClass.length);
+            timelineContent.classList.add('animated', this.animationClass[ran]);
           }
+          // if (Array.from(parentClass).includes('project-wrap')) {
+          //   const timelineContent = item.childNodes[1].children[0].children[0];
+          //   if (!timelineContent.style.visibility) {
+          //     timelineContent.style.visibility = 'visible';
+          //     const ran = Math.floor(Math.random() * this.animationClass.length);
+          //     timelineContent.classList.add('animated', this.animationClass[ran]);
+          //   }
+          // }
         }
       }
     }
@@ -421,20 +427,20 @@
     }
 
     &.word {
-      .timeline-block {
-        &:nth-child(odd).show {
-          .timeline-content {
-            visibility: visible;
-            animation: ani2 0.6s;
-          }
-        }
-        &:nth-child(even).show {
-          .timeline-content {
-            visibility: visible;
-            animation: ani2-inverse 0.6s;
-          }
-        }
-      }
+      // .timeline-block {
+      //   &:nth-child(odd).show {
+      //     .timeline-content {
+      //       visibility: visible;
+      //       animation: ani2 0.6s;
+      //     }
+      //   }
+      //   &:nth-child(even).show {
+      //     .timeline-content {
+      //       visibility: visible;
+      //       animation: ani2-inverse 0.6s;
+      //     }
+      //   }
+      // }
       .timeline-content {
         background-color: #eee;
         padding: 25px;
