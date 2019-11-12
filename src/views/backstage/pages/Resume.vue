@@ -4,8 +4,22 @@
       <el-header height="45px">基本信息</el-header>
       <el-main>
         <div class="base-info">
-          <div class="avatar">
-            <img src="@/assets/images/home/avatar.png" alt />
+          <div class="avatar" v-if="editType!==1">
+            <!-- <img src="@/assets/images/home/avatar.png" alt /> -->
+            <img :src="tool.imgUrl+'/public/uploads/'+userInfo.avatar" alt />
+          </div>
+          <div class="avatar-edit" v-if="editType===1">
+            <el-upload
+              class="avatar-uploader"
+              action="/api/fileUpload"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+              :headers="uploadHeader"
+            >
+              <img v-if="editForm.avatar" :src="tool.imgUrl+'/public/uploads/'+editForm.avatar" class="avatar-img" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
           </div>
           <div class="info-section" v-if="editType!==1">
             <h3 class="h-fontsize22 h-ml5">{{userInfo.resume_base.name}}</h3>
@@ -131,7 +145,9 @@
 <script lang="ts">
   import { Vue, Component } from 'vue-property-decorator';
   import _ from 'lodash';
-  import ajax from '../../../service/ajax';
+  import ajax from '@/service/ajax';
+  import Login from './Login.vue';
+  import tool from '@/util/tool.js';
   interface UserInfo {
     id: number;
     age: number | string;
@@ -152,6 +168,7 @@
     email: string;
     name: object;
     telephone: number;
+    avatar: string;
     jobYear?: string;
     position?: object;
     createdAt?: string;
@@ -169,73 +186,15 @@
       age: '28岁',
       telephone: '15889950967',
       email: '403056352@qq.com',
-      skill: [
-        {
-          name: 'html+css+js',
-          progress: 80
-        },
-        {
-          name: 'vue+ webpack',
-          progress: 90
-        },
-        {
-          name: '小程序',
-          progress: 70
-        }
-      ],
-      work: [
-        {
-          company: '广州宝乐',
-          startDate: '2019-09',
-          endDate: '2019-11',
-          desc: '11'
-        },
-        {
-          company: '红领巾有限',
-          startDate: '2019-09',
-          endDate: '2019-11',
-          desc: '22'
-        }
-      ]
+      skill: [],
+      work: []
     };
-
-    private resume: any = {
-      name: '姓名',
-      company: '深圳市爱挖网络科技有限公司',
-      position: 'WEB前端',
-      workYear: '4年工作经验',
-      education: '大专',
-      age: '28岁',
-      telephone: '15889950967',
-      email: '403056352@qq.com',
-      skill: [
-        {
-          name: 'html+css+js',
-          progress: 80
-        },
-        {
-          name: 'vue+ webpack',
-          progress: 90
-        },
-        {
-          name: '小程序',
-          progress: 70
-        }
-      ],
-      work: [
-        {
-          company: '广州宝乐',
-          startDate: '2019-09',
-          endDate: '2019-11'
-        },
-        {
-          company: '红领巾有限',
-          startDate: '2019-09',
-          endDate: '2019-11'
-        }
-      ]
-    };
-    // private mounted() {}
+    private tool = tool;
+    // private mounted() {
+    //   this.uploadHeader = {
+    //     csrfToken: tool.LocalStorage.get('csrfToken')
+    //   };
+    // }
     private skillPlus() {
       const item = {
         skillName: '',
@@ -293,11 +252,35 @@
           }
         });
     }
+    private handleAvatarSuccess(res: any, file: any) {
+      if (res.code === 0) {
+        ajax.updateAvatar({ avatar: res.data }, (response: any) => {
+          (this as any).$message.success('上传成功！');
+        });
+      }
+      this.editForm.avatar = res.data;
+    }
+    private beforeAvatarUpload(file: any) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      const that: any = this;
+      if (!isJPG) {
+        that.$message.error('上传头像图片只能是 JPG或PNG 格式!');
+      }
+      if (!isLt2M) {
+        that.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+    }
     private get userInfo() {
       const userinfo = this.$store.state.userInfo;
       userinfo.resume_base = userinfo.resume_base || {};
       this.editForm = _.cloneDeep(userinfo, true);
       return userinfo;
+    }
+    private get uploadHeader() {
+      return {
+        csrfToken: tool.cookie.get('csrfToken')
+      };
     }
   }
 </script>
@@ -335,6 +318,36 @@
           img {
             width: 100%;
             height: 100%;
+          }
+        }
+        .avatar-edit {
+          display: flex;
+          align-items: center;
+          width: 133px;
+          height: 133px;
+          border-radius: 50%;
+          overflow: hidden;
+          border: 3px solid#d4d3d3;
+          .avatar-uploader {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            &:hover {
+              border-color: #409eff;
+            }
+            .avatar-img {
+              width: 130px;
+              height: 130px;
+              display: block;
+            }
+            .avatar-uploader-icon {
+              font-size: 28px;
+              color: #8c939d;
+              width: 130px;
+              height: 130px;
+              line-height: 130px;
+              text-align: center;
+            }
           }
         }
         .info-section {

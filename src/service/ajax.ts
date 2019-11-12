@@ -38,4 +38,20 @@ export default {
       success
     });
   },
+  fileUpload(data: any, success: any) {
+    tool.ajax({
+      url: '/fileUpload',
+      type: 'post',
+      data,
+      success
+    });
+  },
+  updateAvatar(data: any, success: any) {
+    tool.ajax({
+      url: '/updateAvatar',
+      type: 'get',
+      data,
+      success
+    });
+  },
 };

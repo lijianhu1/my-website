@@ -1,6 +1,7 @@
 import axios from 'axios'
 import vue from 'vue';
 const tool = {
+  imgUrl: 'http://127.0.0.1:7001',
   getElementTops(el) {
     let actualTop = el.offsetTop;
     let current = el.offsetParent;
@@ -184,6 +185,6 @@ const tool = {
         document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
       }
     }
-  },
+  }
 }
 export default tool;

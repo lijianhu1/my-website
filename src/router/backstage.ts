@@ -15,6 +15,10 @@ const routes = [
       name: 'resume',
       component: () => import('@/views/backstage/pages/Resume.vue'),
     }, {
+      path: 'blog',
+      name: 'blog',
+      component: () => import('@/views/backstage/pages/Blog.vue'),
+    }, {
       path: '/',
       redirect: 'resume'
     }]

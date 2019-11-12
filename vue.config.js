@@ -1,5 +1,4 @@
 module.exports = {
-
   pages: {
     // 前台页面
     index: {
@@ -29,8 +28,8 @@ module.exports = {
     hot: true,
     proxy: {
       '/api': {
-        target: 'http://119.23.50.196:7001',
-        // target: 'http://127.0.0.1:7001',
+        // target: 'http://119.23.50.196:7001',
+        target: process.env.VUE_APP_BASE_API,
 
         pathRewrite: {
           '^/api': ''
@@ -41,5 +40,9 @@ module.exports = {
   transpileDependencies: [
     'vue-echarts',
     'resize-detector'
-  ]
+  ],
+  chainWebpack(obj) {
+    const serverUrl = process.env.VUE_APP_BASE_API;
+    obj.serverUrl = serverUrl;
+  }
 };

@@ -1,11 +1,19 @@
 <template>
   <div id="nav">
-    <el-menu default-active="1" class="el-menu-vertical-demo" background-color="#354457" text-color="#b8c7ce" active-text-color="#ffd04b">
-      <el-menu-item index="1">
+    <el-menu
+      default-active="/home/resume"
+      router
+      class="el-menu-vertical-demo"
+      background-color="#354457"
+      text-color="#b8c7ce"
+      active-text-color="#ffd04b"
+      :default-active="$route.path"
+    >
+      <el-menu-item index="/home/resume">
         <i class="el-icon-setting"></i>
         <span slot="title">简历</span>
       </el-menu-item>
-      <el-menu-item index="2">
+      <el-menu-item index="/home/blog">
         <i class="el-icon-menu"></i>
         <span slot="title">博客</span>
       </el-menu-item>
